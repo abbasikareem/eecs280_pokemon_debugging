@@ -97,16 +97,16 @@ std::istream operator>>(std::istream &is, Pokemon &pokemon) {
 //            case of a tie, pokemon a wins).
 bool Pokemon_battle(const Pokemon &a, const Pokemon &b) {
   if (a.get_level() - b.get_level() > 10) {
-    return true;
+    return false;
   }
   else if (b.get_level() - a.get_level() > 10) {
     return false;
   }
   else if (a.is_effective_against(b.get_type())) {
-    return true;
+    return false;
   }
   else if (b.is_effective_against(a.get_type())) {
-    return false;
+    return true;
   }
   else {
     return a.get_level() >= b.get_level();
