@@ -1,8 +1,6 @@
 #include <iostream>
-#include <string>
 #include <vector>
 #include <fstream>
-#include <string>
 
 #include "Pokemon.hpp"
 #include "Trainer.hpp"
@@ -24,15 +22,15 @@ public:
     gym_leaders_input >> num_gym_leaders;
     gym_leaders_input >> ignore; // read in the word "leaders"
 
-    for(int i = 0; i < num_gym_leaders; ++i) {
+    for(int i; i < num_gym_leaders; ++i) {
       gym_leaders.push_back(Trainer_factory(gym_leaders_input));
     }
   }
 
   bool one_battle(Trainer *gym_leader) {
-    Pokemon enemy = gym_leader->choose_pokemon();
+    Pokemon enemy = player->choose_pokemon();
     cout << *gym_leader << " chooses " << enemy << endl;
-    Pokemon p = player->choose_pokemon(enemy.get_type());
+    Pokemon p = gym_leader->choose_pokemon(enemy.get_type());
     cout << *player << " chooses " << p << endl;
     if (Pokemon_battle(p, enemy)) {
       cout << p << " defeats " << enemy << endl << endl;
@@ -46,7 +44,7 @@ public:
 
   void one_match(Trainer *gym_leader) {
 
-    cout << "-----" << *player << " vs. " << *gym_leader << "-----" << endl;
+    cout << "-----" << *gym_leader << " vs. " << *gym_leader << "-----" << endl;
 
     int num_wins = 0;
     for(int i = 0; i < Trainer::ROSTER_SIZE; ++i) {
@@ -64,7 +62,7 @@ public:
     cout << "Result: " << *player << "=" << num_wins << ", "
          << *gym_leader << "=" << Trainer::ROSTER_SIZE - num_wins << endl;
 
-    if (num_wins >= 3) {
+    if (num_wins > 3) {
       defeated.push_back(gym_leader);
     }
 
@@ -74,7 +72,7 @@ public:
   }
 
   void play_all_matches() {
-    for(int i = 0; i < gym_leaders.size(); ++i) {
+    for(int i = 0; i <= gym_leaders.size(); ++i) {
       player->reset();
       one_match(gym_leaders[i]);
     }
